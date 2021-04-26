@@ -18,7 +18,7 @@ namespace CapstoneProject.Models
         public bool IsProjectAreaCleared {get;set;}
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public int Cost { get; set; }
+        public double Cost { get; set; }
         public string StreetAddress { get; set; }
         public string CityAddress { get; set; }
         public string StateAddress { get; set; }
@@ -35,11 +35,5 @@ namespace CapstoneProject.Models
         public int SalespersonID { get; set; }
         public virtual Salesperson Salesperson { get; set; }
 
-    }
-
-    public class Grass
-    {
-        public string Name { get; set; }
-        public double Cost { get; set; }
     }
 }

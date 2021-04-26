@@ -18,8 +18,8 @@ namespace CapstoneProject.Models
         public string CityAddress { get; set; }
         public string StateAddress { get; set; }
         public string ZipAddress { get; set; }
-        public string LatAddress { get; set; }
-        public string LongAddress { get; set; }
+        public string? LatAddress { get; set; }
+        public string? LongAddress { get; set; }
         public string EMailAddress{ get; set; }
         public string PhoneNumber { get; set; }
 
