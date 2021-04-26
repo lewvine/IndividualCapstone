@@ -1,4 +1,5 @@
 ﻿using CapstoneProject.Data;
+using CapstoneProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,10 +38,12 @@ namespace CapstoneProject.Controllers
         // POST: ProjectController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Project project)
         {
             try
             {
+                _context.projects.Add(project);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

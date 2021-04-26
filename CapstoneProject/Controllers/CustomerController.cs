@@ -43,6 +43,8 @@ namespace CapstoneProject.Controllers
         {
             try
             {
+                _context.customers.Add(customer);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

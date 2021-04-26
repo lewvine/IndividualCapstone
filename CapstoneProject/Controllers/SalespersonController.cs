@@ -1,9 +1,11 @@
 ﻿using CapstoneProject.Data;
+using CapstoneProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CapstoneProject.Controllers
@@ -12,6 +14,7 @@ namespace CapstoneProject.Controllers
     {
         private ApplicationDbContext _context;
 
+
         public SalespersonController(ApplicationDbContext context)
         {
             _context = context;
@@ -19,6 +22,12 @@ namespace CapstoneProject.Controllers
         // GET: SalespersonController
         public ActionResult Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var salesperson = _context.salespeople.Where(s => s.IdentityUserId == userId).FirstOrDefault();
+            if(salesperson == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
             return View();
         }
 
@@ -37,10 +46,12 @@ namespace CapstoneProject.Controllers
         // POST: SalespersonController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Salesperson salesperson)
         {
             try
             {
+                _context.salespeople.Add(salesperson);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
