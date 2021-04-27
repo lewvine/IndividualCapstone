@@ -13,7 +13,8 @@ namespace CapstoneProject.Models
     public class Project
     {
         [Key]
-        public int ProjectID { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public bool IsSold { get; set; }
         public int SquareFootage { get; set; }
@@ -31,11 +32,11 @@ namespace CapstoneProject.Models
         public List<Appointment> Appointments { get; set; }
 
         [ForeignKey("Customer")]
-        public int CustomerID { get; set; }
+        public int CustID { get; set; }
         public virtual Customer Customer { get; set; }
 
         [ForeignKey("Salesperson")]
-        public int SalespersonID { get; set; }
+        public int SalesID { get; set; }
         public virtual Salesperson Salesperson { get; set; }
 
         public void SetGeocode(string StreetAddress, string CityAddress, string StateAddress, string ZipAddress)

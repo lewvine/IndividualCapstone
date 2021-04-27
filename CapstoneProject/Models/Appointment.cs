@@ -18,7 +18,7 @@ namespace CapstoneProject.Models
         public DateTime AppointmentEnd { get; set; }
 
         [ForeignKey("Project")]
-        public int ProjectID { get; set; }
+        public int ID { get; set; }
         public Project Project { get; set; }
 
     }

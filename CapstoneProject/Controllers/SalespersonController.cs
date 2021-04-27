@@ -24,9 +24,24 @@ namespace CapstoneProject.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var salesperson = _context.salespeople.Where(s => s.IdentityUserId == userId).FirstOrDefault();
-            if(salesperson == null)
+
+            if (salesperson == null)
             {
                 return RedirectToAction(nameof(Create));
+            }
+            else
+            {
+                var projects = _context.projects.Where(p => p.Salesperson.ID == salesperson.ID).ToList();
+
+                if (projects.Count() > 0)
+                {
+                    ViewBag.projects = projects.ToList();
+                    return View(salesperson);
+                }
+                else
+                {
+                    return View(salesperson);
+                }
             }
             return View();
         }
@@ -50,6 +65,18 @@ namespace CapstoneProject.Controllers
         {
             try
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var email = this.User.FindFirstValue(ClaimTypes.Email);
+                salesperson.IdentityUserId = userId;
+                salesperson.EMailAddress = email;
+                string address = salesperson.StreetAddress 
+                                 + ", " 
+                                 + salesperson.CityAddress 
+                                 + ", " 
+                                 + salesperson.StateAddress 
+                                 + " " 
+                                 + salesperson.ZipAddress;
+                salesperson.SetGeocode(address);
                 _context.salespeople.Add(salesperson);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));

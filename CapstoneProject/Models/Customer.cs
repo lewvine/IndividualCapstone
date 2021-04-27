@@ -14,7 +14,7 @@ namespace CapstoneProject.Models
     public class Customer
     {
         [Key]
-        public int CustomerID { get; set; }
+        public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string StreetAddress { get; set; }

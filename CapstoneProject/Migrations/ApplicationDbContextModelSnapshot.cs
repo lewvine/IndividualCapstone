@@ -4,16 +4,14 @@ using CapstoneProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CapstoneProject.Data.Migrations
+namespace CapstoneProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210426172959_second")]
-    partial class second
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,22 +32,22 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<DateTime>("AppointmentStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ID")
+                        .HasColumnType("int");
+
                     b.Property<string>("InteractionType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectID")
-                        .HasColumnType("int");
-
                     b.HasKey("AppointmentID");
 
-                    b.HasIndex("ProjectID");
+                    b.HasIndex("ID");
 
                     b.ToTable("appointments");
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -69,11 +67,11 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LatAddress")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("LatAddress")
+                        .HasColumnType("float");
 
-                    b.Property<string>("LongAddress")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("LongAddress")
+                        .HasColumnType("float");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -87,7 +85,7 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerID");
+                    b.HasKey("ID");
 
                     b.HasIndex("IdentityUserId");
 
@@ -134,7 +132,7 @@ namespace CapstoneProject.Data.Migrations
 
             modelBuilder.Entity("CapstoneProject.Models.Project", b =>
                 {
-                    b.Property<int>("ProjectID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -145,7 +143,7 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<double>("Cost")
                         .HasColumnType("float");
 
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("CustID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -163,13 +161,16 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<bool>("IsSold")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LatAddress")
+                    b.Property<double?>("LatAddress")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("LongAddress")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LongAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SalespersonID")
+                    b.Property<int>("SalesID")
                         .HasColumnType("int");
 
                     b.Property<int>("SquareFootage")
@@ -187,20 +188,20 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProjectID");
+                    b.HasKey("ID");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustID");
 
                     b.HasIndex("GrassID");
 
-                    b.HasIndex("SalespersonID");
+                    b.HasIndex("SalesID");
 
                     b.ToTable("projects");
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Salesperson", b =>
                 {
-                    b.Property<int>("SalespersonID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -220,11 +221,11 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LatAddress")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("LatAddress")
+                        .HasColumnType("float");
 
-                    b.Property<string>("LongAddress")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double?>("LongAddress")
+                        .HasColumnType("float");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -238,7 +239,7 @@ namespace CapstoneProject.Data.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("SalespersonID");
+                    b.HasKey("ID");
 
                     b.HasIndex("IdentityUserId");
 
@@ -274,15 +275,15 @@ namespace CapstoneProject.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c34f5647-73f2-4e57-a0f5-3529b0462503",
-                            ConcurrencyStamp = "5a940d58-dea2-4d6b-a7cf-6234d124103d",
+                            Id = "e3b71bf1-3a06-4ad3-b47c-bbac2c5d5019",
+                            ConcurrencyStamp = "f8ffc828-fc91-4d67-a1fb-63fd73eb951c",
                             Name = "Salesperson",
                             NormalizedName = "SALESPERSON"
                         },
                         new
                         {
-                            Id = "27c15953-1652-4987-97f3-6839d623ff25",
-                            ConcurrencyStamp = "eb86d164-5111-405f-8571-2c87cd6039cf",
+                            Id = "04f75c8b-ed0f-4d19-bedc-80e05ddbc30d",
+                            ConcurrencyStamp = "0600650b-562a-49a9-b3c2-3cad5907d384",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -461,7 +462,7 @@ namespace CapstoneProject.Data.Migrations
                 {
                     b.HasOne("CapstoneProject.Models.Project", "Project")
                         .WithMany("Appointments")
-                        .HasForeignKey("ProjectID")
+                        .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,7 +482,7 @@ namespace CapstoneProject.Data.Migrations
                 {
                     b.HasOne("CapstoneProject.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerID")
+                        .HasForeignKey("CustID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -491,7 +492,7 @@ namespace CapstoneProject.Data.Migrations
 
                     b.HasOne("CapstoneProject.Models.Salesperson", "Salesperson")
                         .WithMany()
-                        .HasForeignKey("SalespersonID")
+                        .HasForeignKey("SalesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
