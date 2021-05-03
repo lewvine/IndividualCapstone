@@ -29,9 +29,10 @@
             </div>
         </div>
         <div class="col-6">
-            <p>Total Sales: 50</p>
-            <p>Total Opportunities: No opportunities this period.</p>
-            <p>Close Rate: 100%</p>
+            <p>Total Sales: $@Model.TotalSales</p>
+            <p>Conversion Rate: @((Model.TotalProjects / Model.TotalOpportunities) * 100)%</p>
+            <p>Total Opportunities: @Model.TotalOpportunities</p>
+            <p>Total Projects: @Model.TotalProjects</p>
         </div>
      </div>
 </div>

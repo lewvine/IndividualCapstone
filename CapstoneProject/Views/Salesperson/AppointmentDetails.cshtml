@@ -58,9 +58,7 @@
     <p>@Model.AppointmentStart - @Model.AppointmentEnd</p>
     <p>@Model.Notes</p>
     <p>@Model.InteractionType</p>
-    <a class="btn btn-primary" asp-controller="Salesperson" asp-route-id ="@Model.id" asp-action="AppointmentComplete">Mark Complete</a>
-    <a class="btn btn-success" asp-controller="Salesperson" asp-route-id="@Model.Project.id" asp-action="ConvertToSale">Convert To Sale</a>
-    
+    <a class="btn btn-primary" asp-controller="Project" asp-route-id ="@Model.id" asp-action="AppointmentComplete">Mark Complete</a>   
 </div>
     </div>
 </div>   

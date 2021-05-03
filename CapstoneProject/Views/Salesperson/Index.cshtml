@@ -5,48 +5,35 @@
 @* My booked appointments with projects. *@
 <h1 style="font: georgia; font-variant: small-caps; color: #064e01; padding: 1rem;">My Schedule</h1>
 <div>
-    <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Your Next Appointment is in @((@Model.GetNextAppointment().AppointmentStart - DateTime.Now).Hours.ToString()) Hours:</h2>
+    <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">My Next Appointment is in @((@Model.GetNextAppointment().AppointmentStart - DateTime.Now).Hours.ToString()) Hours:</h2>
     <div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
         <div class="col-4">@Model.GetNextAppointment().AppointmentStart.ToString("dddd, MMMM d, h:mm tt") - @Model.GetNextAppointment().AppointmentEnd.ToString("h:mm tt")</div>
-        @*<div class="col-3"><img src="@appointment.Project.Grass.ImageUrl" /></div>*@
+        <div class="col-3"><img src="@Model.GetNextAppointment().Project.Grass.ImageUrl" /></div>
         <div class="col-3">@Model.GetNextAppointment().Project.StreetAddress, @Model.GetNextAppointment().Project.CityAddress, @Model.GetNextAppointment().Project.StateAddress @Model.GetNextAppointment().Project.ZipAddress</div>
         <div class="col-2"><a style="color: white; width: 150px;" class="btn btn-primary">Complete</a></div>
     </div>
-    }
 </div>
 <div>
     <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Booked Appointments</h2>
-    @foreach (Appointment appointment in Model.Appointments.Where(a=>a.IsBooked == true && a.IsCompleted == false).ToList())
+    @foreach (Appointment appointment in Model.Appointments.Where(a => a.IsBooked == true && a.IsCompleted).ToList())
     {
         <div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
             <div class="col-4">@appointment.AppointmentStart.ToString("dddd, MMMM d, h:mm tt") - @appointment.AppointmentEnd.ToString("h:mm tt")</div>
             @*<div class="col-3"><img src="@appointment.Project.Grass.ImageUrl" /></div>*@
             <div class="col-3">@appointment.Project.StreetAddress, @appointment.Project.CityAddress</div>
-            <div class="col-2"><a style="color: white; width: 150px;" asp-action="AppointmentDetails" asp-route-id="@appointment.id "class="btn btn-primary">Details</a></div>
+            <div class="col-2"><a style="color: white; width: 150px;" asp-action="AppointmentDetails" asp-route-id="@appointment.id " class="btn btn-primary">Details</a></div>
         </div>
     }
 </div>
-<div class="row">
-    <div class="col-6">
-        @* My projects. *@
-        <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Current Projects</h2>
-        @foreach (Project project in Model.Projects)
-        {
-            <div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
-                <div class="col-8">@project.Name</div>
-                <div class="col-4"><a style="color: white; width: 150px;" class="btn btn-primary">Details</a></div>
-            </div>
-        }
-    </div>
-    <div class="col-6">
-        @* My open appointments. *@
-        <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Open Appointments</h2>
-        @foreach (Appointment appointment in Model.Appointments.Where(a => a.IsOpen == true).ToList())
-        {
-            <div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
-                <div class="col-8">@appointment.AppointmentStart.ToString("dddd, MMMM d, h:mm tt") - @appointment.AppointmentEnd.ToString("h:mm tt")</div>
-                <div class="col-4"><a style="color: white; width: 150px;" class="btn btn-primary">Book</a></div>
-            </div>
-        }
-    </div>
+<div>
+    <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Current Opportunities</h2>
+    @foreach (Project project in Model.Projects)
+    {
+<div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
+    <div class="col-6">@project.Name</div>
+    <div class="col-2"><a class="btn btn-primary" asp-controller="Project" asp-route-id="@project.id" asp-action="Details">Details</a></div>
+    <div class="col-2"><a class="btn btn-success" asp-controller="Project" asp-route-id="@project.id" asp-action="ConvertToSale">Convert To Sale</a></div>
 </div>
+    }
+</div>
+

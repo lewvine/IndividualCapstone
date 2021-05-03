@@ -26,8 +26,9 @@ namespace CapstoneProject.Controllers
         }
 
         // GET: ProjectController/Details/5
-        public ActionResult Details(Project project)
+        public ActionResult Details(int id)
         {
+            var project = _context.Projects.Where(p => p.id == id).FirstOrDefault();
             project.Appointments = _context.Appointments.Where(a => a.ProjID == project.id).ToList();
             project.Salesperson = _context.Salespeople.Include("Appointments").Where(s => s.id == project.SalesID).FirstOrDefault();
             project.Customer = _context.Customers.Where(c => c.id == project.CustID).FirstOrDefault();
@@ -38,6 +39,29 @@ namespace CapstoneProject.Controllers
 
             //Adding an appointment for testing;
             return View(project);
+        }
+
+        [HttpGet]
+        public ActionResult GetAppointments(int id)
+        {
+            var project = _context.Projects
+                .Include(p => p.Customer)
+                .Include(p => p.Salesperson)
+                .Where(p => p.id == id)
+                .FirstOrDefault();
+            var salesperson = _context.Salespeople.Where(s => s.id == project.Salesperson.id).FirstOrDefault();
+            var appointments = salesperson.Appointments.Where(a => a.IsOpen);
+            return View(appointments);
+        }
+
+        [HttpPost]
+        public ActionResult SetAppointment(int id)
+        {
+            var appointment = _context.Appointments.Where(a => a.id == id).FirstOrDefault();
+            appointment.IsBooked = true;
+            appointment.IsOpen = false;
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Salesperson");
         }
 
         public ActionResult ConfirmAppointment(int apptId, int id)
@@ -68,10 +92,11 @@ namespace CapstoneProject.Controllers
 
         public ActionResult ConvertToSale(int id)
         {
-            Project project = _context.Projects.Where(p => p.id == id).FirstOrDefault();
+            Project project = _context.Projects.Include(p => p.Salesperson).Where(p => p.id == id).FirstOrDefault();
             project.IsSold = true;
             project.Salesperson.TotalProjects += 1;
             project.Salesperson.TotalSales += project.Cost;
+            _context.SaveChanges();
             return RedirectToAction("Index", "Salesperson");
 
         }
