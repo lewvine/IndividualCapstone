@@ -1,0 +1,71 @@
+﻿@model CapstoneProject.Models.Appointment
+
+<div>
+<h1>Appointment Details</h1>
+<div class="row">
+    <div class="col-6">
+        <h2>Location</h2>
+        <div class="iframe-container">
+            <div class="col-6"><iframe width="500" height="300" loading="lazy" src="@ViewBag.MapUrl"></iframe></div>
+
+        </div>
+        <div>
+            <h3>Address:</h3>
+            <p>@Model.Project.StreetAddress</p>
+            <p>@Model.Project.CityAddress, @Model.Project.StateAddress @Model.Project.ZipAddress </p>
+        </div>
+    </div>
+    <div class="col-6">
+        <h2>Project Information</h2>
+        <div>
+            <h3>Customer Details:</h3>
+            <p>Name: @Model.Project.Customer.FirstName @Model.Project.Customer.LastName</p>
+            <p>Phone: @Model.Project.Customer.PhoneNumber</p>
+            <p>E-Mail: @Model.Project.Customer.EMailAddress</p>
+        </div>
+        <div>
+            <h3>Project Details</h3>
+            <div class="row">
+                <div class="col-4" style="text-align: center;">
+                    <h4>Cost</h4>
+                    <p>$@Model.Project.Cost</p>
+                </div>
+                <div class="col-4" style="text-align: center;">
+                    <h4>Grass</h4>
+                    <img style="width: 100%;" src="@Model.Project.Grass.ImageUrl"></img>
+                    <p>@Model.Project.Grass.Name</p>
+                </div>
+                <div class="col-4" style="text-align: center;">
+                    <h4>Size:</h4>
+                    <p>@Model.Project.SquareFootage</p>
+                    <p>Square Feet</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>Project History</h3>
+            @foreach(Appointment appt in @Model.Project.Appointments)
+            {
+                <div class="row">
+                    <div class="col-3">Date: @appt.AppointmentStart - @appt.AppointmentEnd</div>
+                    <div class="col-3">Notes: @appt.Notes</div>
+                    <div class="col-3">Appointment Type: @appt.InteractionType</div>
+                </div>
+            }
+        </div>
+<div>
+    <h2>Appointment Information:</h2>
+    <p>@Model.AppointmentStart - @Model.AppointmentEnd</p>
+    <p>@Model.Notes</p>
+    <p>@Model.InteractionType</p>
+    <a class="btn btn-primary" asp-controller="Salesperson" asp-route-id ="@Model.id" asp-action="AppointmentComplete">Mark Complete</a>
+    <a class="btn btn-success" asp-controller="Salesperson" asp-route-id="@Model.Project.id" asp-action="ConvertToSale">Convert To Sale</a>
+    
+</div>
+    </div>
+</div>   
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

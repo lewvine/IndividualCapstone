@@ -16,13 +16,13 @@
 </div>
 <div>
     <h2 style="font-variant: small-caps; color: #064e01; padding: 1rem;">Booked Appointments</h2>
-    @foreach (Appointment appointment in Model.Appointments.Where(a=>a.IsBooked == true).ToList())
+    @foreach (Appointment appointment in Model.Appointments.Where(a=>a.IsBooked == true && a.IsCompleted == false).ToList())
     {
         <div class="row" style="border-bottom: 1px solid gray; padding: .5rem; margin: 0 1rem;">
             <div class="col-4">@appointment.AppointmentStart.ToString("dddd, MMMM d, h:mm tt") - @appointment.AppointmentEnd.ToString("h:mm tt")</div>
             @*<div class="col-3"><img src="@appointment.Project.Grass.ImageUrl" /></div>*@
             <div class="col-3">@appointment.Project.StreetAddress, @appointment.Project.CityAddress</div>
-            <div class="col-2"><a style="color: white; width: 150px;" class="btn btn-primary">Complete</a></div>
+            <div class="col-2"><a style="color: white; width: 150px;" asp-action="AppointmentDetails" asp-route-id="@appointment.id "class="btn btn-primary">Details</a></div>
         </div>
     }
 </div>

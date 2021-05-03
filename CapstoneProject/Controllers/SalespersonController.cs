@@ -40,6 +40,23 @@ namespace CapstoneProject.Controllers
         }
 
         // GET: SalespersonController/Details/5
+        public ActionResult AppointmentDetails(int id)
+        {
+            Appointment appointment = _context.Appointments
+                .Where(a => a.id == id)
+                .Include(a => a.Project)
+                .ThenInclude(p => p.Customer)
+                .Include(a => a.Project)
+                .ThenInclude(p => p.Grass)
+                .Include(a => a.Project)
+                .ThenInclude(p => p.Salesperson)
+                .FirstOrDefault();
+            ViewBag.MapUrl = $"https://www.google.com/maps/embed/v1/place?key=" + Utilities.APIs.MapsKey + "&q=" + appointment.Project.LatAddress.ToString() + "," + appointment.Project.LongAddress.ToString();
+
+            return View(appointment);
+        }
+
+        // GET: SalespersonController/Details/5
         public ActionResult Details(int id)
         {
             return View();

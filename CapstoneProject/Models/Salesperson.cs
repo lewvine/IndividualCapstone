@@ -26,6 +26,10 @@ namespace CapstoneProject.Models
         public double? LongAddress { get; set; }
         public string EMailAddress { get; set; }
         public string PhoneNumber { get; set; }
+        public double TotalSales { get; set; } = 0;
+        public double TotalPossibleSales { get; set; } = 0;
+        public int TotalProjects { get; set; } = 0;
+        public int TotalOpportunities { get; set; } = 0;
         public ICollection<Project> Projects { get; set; }
 
         [ForeignKey("IdentityUser")]

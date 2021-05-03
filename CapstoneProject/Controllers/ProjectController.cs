@@ -57,6 +57,25 @@ namespace CapstoneProject.Controllers
             return RedirectToAction("Details", project);
         }
 
+        public ActionResult AppointmentComplete(int id)
+        {
+            Appointment appt = _context.Appointments.Where(a => a.id == id).FirstOrDefault();
+            appt.IsCompleted = true;
+            appt.AppointmentEnd = DateTime.Now;
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Salesperson");
+        }
+
+        public ActionResult ConvertToSale(int id)
+        {
+            Project project = _context.Projects.Where(p => p.id == id).FirstOrDefault();
+            project.IsSold = true;
+            project.Salesperson.TotalProjects += 1;
+            project.Salesperson.TotalSales += project.Cost;
+            return RedirectToAction("Index", "Salesperson");
+
+        }
+
         // GET: ProjectController/Create
         public ActionResult Create()
         {
@@ -116,6 +135,8 @@ namespace CapstoneProject.Controllers
                 project.SalesID = salesperson.id;
                 project.Salesperson = salesperson;
             }
+            project.Salesperson.TotalPossibleSales += project.Cost;
+            project.Salesperson.TotalOpportunities += 1;
             _context.Projects.Add(project);
             _context.SaveChanges();
             return RedirectToAction("Details", project);
