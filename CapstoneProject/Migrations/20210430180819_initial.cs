@@ -47,17 +47,19 @@ namespace CapstoneProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grass",
+                name: "Grasses",
                 columns: table => new
                 {
-                    GrassID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cost = table.Column<double>(type: "float", nullable: false)
+                    Info = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cost = table.Column<double>(type: "float", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Grass", x => x.GrassID);
+                    table.PrimaryKey("PK_Grasses", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,10 +169,10 @@ namespace CapstoneProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "customers",
+                name: "Customers",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -186,9 +188,9 @@ namespace CapstoneProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customers", x => x.ID);
+                    table.PrimaryKey("PK_Customers", x => x.id);
                     table.ForeignKey(
-                        name: "FK_customers_AspNetUsers_IdentityUserId",
+                        name: "FK_Customers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -196,10 +198,10 @@ namespace CapstoneProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "salespeople",
+                name: "Salespeople",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -215,9 +217,9 @@ namespace CapstoneProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_salespeople", x => x.ID);
+                    table.PrimaryKey("PK_Salespeople", x => x.id);
                     table.ForeignKey(
-                        name: "FK_salespeople_AspNetUsers_IdentityUserId",
+                        name: "FK_Salespeople_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -225,19 +227,18 @@ namespace CapstoneProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "projects",
+                name: "Projects",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsSold = table.Column<bool>(type: "bit", nullable: false),
                     SquareFootage = table.Column<int>(type: "int", nullable: false),
-                    GrassID = table.Column<int>(type: "int", nullable: true),
                     IsProjectAreaCleared = table.Column<bool>(type: "bit", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Cost = table.Column<double>(type: "float", nullable: false),
                     StreetAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CityAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -246,51 +247,63 @@ namespace CapstoneProject.Migrations
                     LatAddress = table.Column<double>(type: "float", nullable: true),
                     LongAddress = table.Column<double>(type: "float", nullable: true),
                     CustID = table.Column<int>(type: "int", nullable: false),
-                    SalesID = table.Column<int>(type: "int", nullable: false)
+                    SalesID = table.Column<int>(type: "int", nullable: false),
+                    GrassID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_projects", x => x.ID);
+                    table.PrimaryKey("PK_Projects", x => x.id);
                     table.ForeignKey(
-                        name: "FK_projects_customers_CustID",
+                        name: "FK_Projects_Customers_CustID",
                         column: x => x.CustID,
-                        principalTable: "customers",
-                        principalColumn: "ID",
+                        principalTable: "Customers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_projects_Grass_GrassID",
+                        name: "FK_Projects_Grasses_GrassID",
                         column: x => x.GrassID,
-                        principalTable: "Grass",
-                        principalColumn: "GrassID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalTable: "Grasses",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_projects_salespeople_SalesID",
+                        name: "FK_Projects_Salespeople_SalesID",
                         column: x => x.SalesID,
-                        principalTable: "salespeople",
-                        principalColumn: "ID",
+                        principalTable: "Salespeople",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "appointments",
+                name: "Appointments",
                 columns: table => new
                 {
-                    AppointmentID = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InteractionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AppointmentStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsOpen = table.Column<bool>(type: "bit", nullable: false),
+                    IsBooked = table.Column<bool>(type: "bit", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    ProjID = table.Column<int>(type: "int", nullable: true),
+                    Salespersonid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_appointments", x => x.AppointmentID);
+                    table.PrimaryKey("PK_Appointments", x => x.id);
                     table.ForeignKey(
-                        name: "FK_appointments_projects_ID",
-                        column: x => x.ID,
-                        principalTable: "projects",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Appointments_Projects_ProjID",
+                        column: x => x.ProjID,
+                        principalTable: "Projects",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Salespeople_Salespersonid",
+                        column: x => x.Salespersonid,
+                        principalTable: "Salespeople",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -298,24 +311,29 @@ namespace CapstoneProject.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "e3b71bf1-3a06-4ad3-b47c-bbac2c5d5019", "f8ffc828-fc91-4d67-a1fb-63fd73eb951c", "Salesperson", "SALESPERSON" },
-                    { "04f75c8b-ed0f-4d19-bedc-80e05ddbc30d", "0600650b-562a-49a9-b3c2-3cad5907d384", "Customer", "CUSTOMER" }
+                    { "b69be5a0-0bb6-42e8-b61f-626e5b60d07a", "40b15103-77c3-4467-9e87-6ab4f5b72202", "Salesperson", "SALESPERSON" },
+                    { "a684cf5e-5926-48dd-9d1b-aec5fac493f7", "cbb60528-b88a-4e61-90fa-cc241b3ce739", "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.InsertData(
-                table: "Grass",
-                columns: new[] { "GrassID", "Cost", "Name" },
+                table: "Grasses",
+                columns: new[] { "id", "Cost", "ImageUrl", "Info", "Name" },
                 values: new object[,]
                 {
-                    { 1, 2.5, "Tall Fescue" },
-                    { 2, 3.25, "Bermuda" },
-                    { 3, 4.0, "Kentucky Bluegrass" }
+                    { 1, 2.5, "/images/TallFescue.PNG", "A cool season grass ideally suited for climates with cool summers and mild winters.  Stays green all year round!", "Tall Fescue" },
+                    { 2, 3.5, "/images/BermudaGrass.PNG", "A warm season grass best suited for climates with hot summers and moderate winters.  Spreads on it's own and browns in the winter.", "Bermuda" },
+                    { 3, 4.5, "/images/KentuckyBluegrass.PNG", "A warm season grass known for it's bluish tint.  Great for Southern landscapes.  Tolerates heat well.", "Kentucky Bluegrass" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_appointments_ID",
-                table: "appointments",
-                column: "ID");
+                name: "IX_Appointments_ProjID",
+                table: "Appointments",
+                column: "ProjID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_Salespersonid",
+                table: "Appointments",
+                column: "Salespersonid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -357,35 +375,35 @@ namespace CapstoneProject.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_customers_IdentityUserId",
-                table: "customers",
+                name: "IX_Customers_IdentityUserId",
+                table: "Customers",
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_projects_CustID",
-                table: "projects",
+                name: "IX_Projects_CustID",
+                table: "Projects",
                 column: "CustID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_projects_GrassID",
-                table: "projects",
+                name: "IX_Projects_GrassID",
+                table: "Projects",
                 column: "GrassID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_projects_SalesID",
-                table: "projects",
+                name: "IX_Projects_SalesID",
+                table: "Projects",
                 column: "SalesID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_salespeople_IdentityUserId",
-                table: "salespeople",
+                name: "IX_Salespeople_IdentityUserId",
+                table: "Salespeople",
                 column: "IdentityUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "appointments");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -403,19 +421,19 @@ namespace CapstoneProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "projects");
+                name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "customers");
+                name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Grass");
+                name: "Grasses");
 
             migrationBuilder.DropTable(
-                name: "salespeople");
+                name: "Salespeople");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

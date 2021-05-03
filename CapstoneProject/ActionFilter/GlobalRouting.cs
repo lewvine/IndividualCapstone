@@ -25,11 +25,11 @@ namespace CapstoneProject.ActionFilter
             var controller = context.RouteData.Values["controller"];
             if(controller.Equals("Home"))
             {
-                if (_claimsPrincipal.IsInRole("Customer"))
-                {
-                    context.Result = new RedirectToActionResult("Index", "Customer", null);
-                }
-                else if (_claimsPrincipal.IsInRole("Salesperson"))
+                //if (_claimsPrincipal.IsInRole("Customer"))
+                //{
+                //    context.Result = new RedirectToActionResult("Index", "Home", null);
+                //}
+                if (_claimsPrincipal.IsInRole("Salesperson"))
                 {
                     context.Result = new RedirectToActionResult("Index", "Salesperson", null);
                 }

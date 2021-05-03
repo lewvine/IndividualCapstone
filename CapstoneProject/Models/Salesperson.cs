@@ -14,17 +14,19 @@ namespace CapstoneProject.Models
     public class Salesperson
     {
         [Key]
-        public int ID { get; set; }
+        public int id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string StreetAddress { get; set; }
         public string CityAddress { get; set; }
         public string StateAddress { get; set; }
+        public List<Appointment> Appointments { get; set; }
         public string ZipAddress { get; set; }
         public double? LatAddress { get; set; }
         public double? LongAddress { get; set; }
         public string EMailAddress { get; set; }
         public string PhoneNumber { get; set; }
+        public ICollection<Project> Projects { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
@@ -42,6 +44,29 @@ namespace CapstoneProject.Models
             GeocodingResponse geocode = geoCodingEngine.Query(geocodeRequest);
             this.LatAddress = geocode.Results.First().Geometry.Location.Latitude;
             this.LongAddress = geocode.Results.First().Geometry.Location.Longitude;
+        }
+        public Appointment GetNextAppointment()
+        {
+            return this.Appointments
+                .Where(a => a.IsBooked == true)
+                .OrderBy(a => a.AppointmentStart)
+                .FirstOrDefault();
+        }
+
+        public bool HasProjects(List<Project> projects)
+        {
+            if(Projects.Count == 0)
+            {
+                return false;
+            }
+            if (Projects.Where(p => p.SalesID == this.id).FirstOrDefault() != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using CapstoneProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,27 +24,19 @@ namespace CapstoneProject.Controllers
         public ActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var salesperson = _context.salespeople.Where(s => s.IdentityUserId == userId).FirstOrDefault();
-
+            var salesperson = _context.Salespeople
+                .Include(s => s.Projects)
+                   .ThenInclude(p => p.Customer)
+                .Include(s => s.Projects)
+                    .ThenInclude(p => p.Grass)
+                .Include(s => s.Appointments)
+                .Where(s => s.IdentityUserId == userId)
+                .FirstOrDefault();
             if (salesperson == null)
             {
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction("Create");
             }
-            else
-            {
-                var projects = _context.projects.Where(p => p.Salesperson.ID == salesperson.ID).ToList();
-
-                if (projects.Count() > 0)
-                {
-                    ViewBag.projects = projects.ToList();
-                    return View(salesperson);
-                }
-                else
-                {
-                    return View(salesperson);
-                }
-            }
-            return View();
+            return View(salesperson);
         }
 
         // GET: SalespersonController/Details/5
@@ -77,7 +70,32 @@ namespace CapstoneProject.Controllers
                                  + " " 
                                  + salesperson.ZipAddress;
                 salesperson.SetGeocode(address);
-                _context.salespeople.Add(salesperson);
+                salesperson.Appointments = new List<Appointment>();
+                DateTime apptTime = new DateTime();
+                apptTime = DateTime.Today;
+                for (int days = 1; days <= 5; days++)
+                {
+                    DateTime today = apptTime.AddDays(days);
+                    for (int apptIndex = 0; apptIndex < 4; apptIndex++)
+                    {
+                        int apptHour = 8 + (apptIndex * 2);
+                        Appointment appt = new Appointment
+                        {
+                            AppointmentStart = today.AddHours(apptHour),
+                            AppointmentEnd = today.AddHours(apptHour + 2),
+                            IsBooked = false,
+                            IsCompleted = false,
+                            IsOpen = true,
+                            Notes = "This appointment is open",
+                            InteractionType = "Open appointment",
+                            Project = null,
+                            ProjID = null,
+                        };
+                        salesperson.Appointments.Add(appt);
+                        _context.SaveChanges();
+                    };
+                }
+                _context.Salespeople.Add(salesperson);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }

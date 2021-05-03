@@ -10,10 +10,11 @@ namespace CapstoneProject.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<Customer> customers { get; set; }
-        public DbSet<Salesperson> salespeople { get; set; }
-        public DbSet<Project> projects { get; set; }
-        public DbSet<Appointment> appointments { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Salesperson> Salespeople { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Grass> Grasses { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -39,21 +40,27 @@ namespace CapstoneProject.Data
                 .HasData(
                 new Grass
                 {
-                    GrassID = 1,
+                    id = 1,
                     Name = "Tall Fescue",
-                    Cost = 2.50
+                    Info = "A cool season grass ideally suited for climates with cool summers and mild winters.  Stays green all year round!",
+                    Cost = 2.50,
+                    ImageUrl = "/images/TallFescue.PNG"
                 },
                 new Grass
                 {
-                    GrassID = 2,
+                    id = 2,
                     Name = "Bermuda",
-                    Cost = 3.25
+                    Info = "A warm season grass best suited for climates with hot summers and moderate winters.  Spreads on it's own and browns in the winter.",
+                    Cost = 3.50,
+                    ImageUrl = "/images/BermudaGrass.PNG"
                 },
                 new Grass
                 {
-                    GrassID = 3,
+                    id = 3,
                     Name = "Kentucky Bluegrass",
-                    Cost = 4.00
+                    Info = "A warm season grass known for it's bluish tint.  Great for Southern landscapes.  Tolerates heat well.",
+                    Cost = 4.50,
+                    ImageUrl = "/images/KentuckyBluegrass.PNG"
                 });
         }
     }

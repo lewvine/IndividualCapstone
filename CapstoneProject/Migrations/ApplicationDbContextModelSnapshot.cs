@@ -21,7 +21,7 @@ namespace CapstoneProject.Migrations
 
             modelBuilder.Entity("CapstoneProject.Models.Appointment", b =>
                 {
-                    b.Property<int>("AppointmentID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -32,22 +32,39 @@ namespace CapstoneProject.Migrations
                     b.Property<DateTime>("AppointmentStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("InteractionType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AppointmentID");
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("ID");
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
-                    b.ToTable("appointments");
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Salespersonid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ProjID");
+
+                    b.HasIndex("Salespersonid");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Customer", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -85,16 +102,16 @@ namespace CapstoneProject.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("customers");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Grass", b =>
                 {
-                    b.Property<int>("GrassID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -102,37 +119,49 @@ namespace CapstoneProject.Migrations
                     b.Property<double>("Cost")
                         .HasColumnType("float");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Info")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GrassID");
+                    b.HasKey("id");
 
-                    b.ToTable("Grass");
+                    b.ToTable("Grasses");
 
                     b.HasData(
                         new
                         {
-                            GrassID = 1,
+                            id = 1,
                             Cost = 2.5,
+                            ImageUrl = "/images/TallFescue.PNG",
+                            Info = "A cool season grass ideally suited for climates with cool summers and mild winters.  Stays green all year round!",
                             Name = "Tall Fescue"
                         },
                         new
                         {
-                            GrassID = 2,
-                            Cost = 3.25,
+                            id = 2,
+                            Cost = 3.5,
+                            ImageUrl = "/images/BermudaGrass.PNG",
+                            Info = "A warm season grass best suited for climates with hot summers and moderate winters.  Spreads on it's own and browns in the winter.",
                             Name = "Bermuda"
                         },
                         new
                         {
-                            GrassID = 3,
-                            Cost = 4.0,
+                            id = 3,
+                            Cost = 4.5,
+                            ImageUrl = "/images/KentuckyBluegrass.PNG",
+                            Info = "A warm season grass known for it's bluish tint.  Great for Southern landscapes.  Tolerates heat well.",
                             Name = "Kentucky Bluegrass"
                         });
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Project", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -149,10 +178,10 @@ namespace CapstoneProject.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("End")
+                    b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("GrassID")
+                    b.Property<int>("GrassID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsProjectAreaCleared")
@@ -188,7 +217,7 @@ namespace CapstoneProject.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
                     b.HasIndex("CustID");
 
@@ -196,12 +225,12 @@ namespace CapstoneProject.Migrations
 
                     b.HasIndex("SalesID");
 
-                    b.ToTable("projects");
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("CapstoneProject.Models.Salesperson", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -239,11 +268,11 @@ namespace CapstoneProject.Migrations
                     b.Property<string>("ZipAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("salespeople");
+                    b.ToTable("Salespeople");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -275,15 +304,15 @@ namespace CapstoneProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e3b71bf1-3a06-4ad3-b47c-bbac2c5d5019",
-                            ConcurrencyStamp = "f8ffc828-fc91-4d67-a1fb-63fd73eb951c",
+                            Id = "b69be5a0-0bb6-42e8-b61f-626e5b60d07a",
+                            ConcurrencyStamp = "40b15103-77c3-4467-9e87-6ab4f5b72202",
                             Name = "Salesperson",
                             NormalizedName = "SALESPERSON"
                         },
                         new
                         {
-                            Id = "04f75c8b-ed0f-4d19-bedc-80e05ddbc30d",
-                            ConcurrencyStamp = "0600650b-562a-49a9-b3c2-3cad5907d384",
+                            Id = "a684cf5e-5926-48dd-9d1b-aec5fac493f7",
+                            ConcurrencyStamp = "cbb60528-b88a-4e61-90fa-cc241b3ce739",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -462,9 +491,11 @@ namespace CapstoneProject.Migrations
                 {
                     b.HasOne("CapstoneProject.Models.Project", "Project")
                         .WithMany("Appointments")
-                        .HasForeignKey("ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjID");
+
+                    b.HasOne("CapstoneProject.Models.Salesperson", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("Salespersonid");
 
                     b.Navigation("Project");
                 });
@@ -481,17 +512,19 @@ namespace CapstoneProject.Migrations
             modelBuilder.Entity("CapstoneProject.Models.Project", b =>
                 {
                     b.HasOne("CapstoneProject.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Projects")
                         .HasForeignKey("CustID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CapstoneProject.Models.Grass", "Grass")
-                        .WithMany()
-                        .HasForeignKey("GrassID");
+                        .WithMany("Projects")
+                        .HasForeignKey("GrassID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CapstoneProject.Models.Salesperson", "Salesperson")
-                        .WithMany()
+                        .WithMany("Projects")
                         .HasForeignKey("SalesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -563,9 +596,26 @@ namespace CapstoneProject.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CapstoneProject.Models.Customer", b =>
+                {
+                    b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("CapstoneProject.Models.Grass", b =>
+                {
+                    b.Navigation("Projects");
+                });
+
             modelBuilder.Entity("CapstoneProject.Models.Project", b =>
                 {
                     b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("CapstoneProject.Models.Salesperson", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,15 +11,19 @@ namespace CapstoneProject.Models
     public class Appointment
     {
         [Key]
-        public int AppointmentID { get; set; }
-
+        public int id { get; set; }
         public string InteractionType { get; set; }
         public DateTime AppointmentStart { get; set; }
         public DateTime AppointmentEnd { get; set; }
+        public string? Notes { get; set; }
+
+        public bool IsOpen { get; set; } = true;
+        public bool IsBooked { get; set; } = false;
+        public bool IsCompleted { get; set; } = false;
 
         [ForeignKey("Project")]
-        public int ID { get; set; }
-        public Project Project { get; set; }
+        public int? ProjID { get; set; }
+        public Project? Project { get; set; }
 
     }
 }

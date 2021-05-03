@@ -1,8 +1,55 @@
-﻿@{
+﻿@model CapstoneProject.Models.Project
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div>
+    <div class="row grass-container">
+        @foreach (var grass in ViewBag.grasses)
+        {
+        <div class="col-4 grass">
+            <div class="grass-image">
+                <img style="width: 80%;" src=@grass.ImageUrl runat="server" />
+            </div>
+            <div class="grass-cost">
+                <p>Starting at</p>
+                <h3><span>$</span>@grass.Cost</h3>
+                <p>per square foot</p>
+            </div>
+            <div class="grass-title">
+                <h3>@grass.Name</h3>
+            </div>
+            <div class="grass-info">
+                <p>@grass.Info</p>
+            </div>
+            @if (this.User.IsInRole("Customer"))
+            {
+                <form asp-controller="Project" asp-action="create">
+                    <label for="squarefootage">Enter the square footage of your project area:</label>
+                    <input asp-for="GrassID" type="hidden" value="@grass.id" />
+                    <input asp-for="Start" type="hidden" value="@DateTime.Now" />
+                    <input asp-for="SquareFootage" id="squarefootage" type="text" />
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsProjectAreaCleared" />Is project area already cleared?
+                        </label>
+                    </div>
+                    <button value="Start a Project" style="width: 100%; height: 50px;" class="btn btn-primary" type="submit">Start a new project with this grass</button>
+                </form>
+            }
+            else 
+            { 
+            <div style="background-color: yellow; padding: 2rem;">
+                <p>Register as a customer at the top of the page to start a new project with this grass!</p>
+            </div>
+            }
+        </div>
+        }
+
+    </div>
 </div>

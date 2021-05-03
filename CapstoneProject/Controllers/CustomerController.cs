@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CapstoneProject.Controllers
@@ -21,7 +22,17 @@ namespace CapstoneProject.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
-            return View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            
+            if (customer == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+            else 
+            {
+                return View();
+            }
         }
 
         // GET: CustomerController/Details/5
@@ -43,9 +54,21 @@ namespace CapstoneProject.Controllers
         {
             try
             {
-                _context.customers.Add(customer);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var email = this.User.FindFirstValue(ClaimTypes.Email);
+                customer.IdentityUserId = userId;
+                customer.EMailAddress = email;
+                string address = customer.StreetAddress
+                                 + ", "
+                                 + customer.CityAddress
+                                 + ", "
+                                 + customer.StateAddress
+                                 + " "
+                                 + customer.ZipAddress;
+                customer.SetGeocode(address);
+                _context.Customers.Add(customer);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             catch
             {

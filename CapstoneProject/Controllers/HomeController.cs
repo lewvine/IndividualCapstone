@@ -1,10 +1,12 @@
-﻿using CapstoneProject.Models;
+﻿using CapstoneProject.Data;
+using CapstoneProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CapstoneProject.Controllers
@@ -12,14 +14,27 @@ namespace CapstoneProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private ApplicationDbContext _context;
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (this.User.IsInRole("Salesperson"))
+            {
+                var isTrue = _context.Salespeople.Where(s => s.IdentityUserId == userId).ToList().FirstOrDefault();
+                if(isTrue == null)
+                {
+                    return RedirectToAction("Create", "Salesperson");
+
+                }
+                return RedirectToAction("Index", "Salesperson");
+            }
+            ViewBag.Grasses = _context.Grasses.ToList();
             return View();
         }
 

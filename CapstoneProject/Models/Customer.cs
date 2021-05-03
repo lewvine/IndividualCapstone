@@ -14,7 +14,7 @@ namespace CapstoneProject.Models
     public class Customer
     {
         [Key]
-        public int ID { get; set; }
+        public int id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string StreetAddress { get; set; }
@@ -25,14 +25,14 @@ namespace CapstoneProject.Models
         public double? LongAddress { get; set; }
         public string EMailAddress{ get; set; }
         public string PhoneNumber { get; set; }
+        public ICollection<Project> Projects { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
 
-        public void SetGeocode(string StreetAddress, string CityAddress, string StateAddress, string ZipAddress)
+        public void SetGeocode(string address)
         {
-            string address = StreetAddress + ", " + CityAddress + ", " + StateAddress + " " + ZipAddress;
             GeocodingRequest geocodeRequest = new GeocodingRequest()
             {
                 Address = address,
@@ -43,12 +43,6 @@ namespace CapstoneProject.Models
             GeocodingResponse geocode = geoCodingEngine.Query(geocodeRequest);
             this.LatAddress = geocode.Results.First().Geometry.Location.Latitude;
             this.LongAddress = geocode.Results.First().Geometry.Location.Longitude;
-        }
-
-        public string GetGeocode()
-        {
-            string address = "(" + this.LatAddress.ToString() + "," + this.LongAddress.ToString() + ")";
-            return address;
         }
 
     }
